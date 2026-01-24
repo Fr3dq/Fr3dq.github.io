@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pytanie Walentynkowe</title>
+    <style>
+        /* Ustawienia ogólne strony */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000000; /* Czarne tło */
+            font-family: 'Arial', sans-serif;
+            overflow: hidden; /* Zapobiega paskom przewijania */
+            position: relative;
+        }
+
+        /* Subtelna czerwona poświata na środku */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(80,0,20,0.4) 0%, rgba(0,0,0,1) 70%);
+            z-index: -1;
+        }
+
+        /* Kontener na główną treść */
+        .container {
+            text-align: center;
+            color: #ff4d6d; /* Romantyczny różowo-czerwony kolor tekstu */
+            z-index: 10;
+            padding: 30px;
+            border-radius: 15px;
+            background: rgba(20, 0, 0, 0.5); /* Lekko przezroczyste tło pod tekstem */
+            box-shadow: 0 0 20px rgba(255, 50, 80, 0.2);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(255, 77, 109, 0.7);
+        }
+
+        p.subtext {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #ff9eb5;
+        }
+
+        /* Stylizacja przycisków */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative; /* Potrzebne do uciekającego przycisku */
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            font-weight: bold;
+        }
+
+        /* Przycisk TAK */
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 77, 109, 0.5);
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1);
+            background-color: #ff1f48;
+        }
+
+        /* Przycisk NIE (który będzie uciekał) */
+        #noBtn {
+            background-color: #555;
+            color: #ccc;
+            position: relative; /* Ważne dla JS */
+        }
+
+        /* Wiadomość końcowa (początkowo ukryta) */
+        #finalMessage {
+            display: none;
+            font-size: 2rem;
+            color: #ff4d6d;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Animowane serduszka w tle */
+        .heart-bg {
+            position: absolute;
+            color: #ff4d6d;
+            opacity: 0.3;
+            top: -10vh;
+            animation-name: floatHeart;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            z-index: -2;
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.4; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="heartsContainer"></div>
+
+    <div class="container">
+        <div id="questionBox">
+            <h1>❤️<br>Czy spędzisz ze mną Walentynki?</h1>
+            <p class="subtext">Proszę, powiedz tak...</p>
+            
+            <div class="buttons">
+                <button id="yesBtn">TAK, z przyjemnością! 🥰</button>
+                <button id="noBtn">Nie, dziękuję.</button>
+            </div>
+        </div>
+
+        <div id="finalMessage">
+            Jupi! Wiedziałem! <br> 🥰💖🎆 <br> Do zobaczenia!
+        </div>
+    </div>
+
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const questionBox = document.getElementById('questionBox');
+        const finalMessage = document.getElementById('finalMessage');
+
+        // Funkcja obsługująca kliknięcie TAK
+        yesBtn.addEventListener('click', () => {
+            questionBox.style.display = 'none';
+            finalMessage.style.display = 'block';
+            // Dodatkowy efekt - wybuch serduszek
+            createManyHearts();
+        });
+
+        // Funkcja sprawiająca, że przycisk NIE ucieka
+        function moveButton() {
+            // Obliczamy nową losową pozycję
+            // Odejmujemy szerokość/wysokość przycisku, żeby nie uciekł poza ekran
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 50);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 50);
+            
+            noBtn.style.position = 'fixed'; // Zmieniamy na fixed, żeby poruszał się po całym oknie
+            noBtn.style.left = `${x}px`;
+            noBtn.style.top = `${y}px`;
+        }
+
+        // Reaguj na najechanie myszką (desktop) i dotknięcie (mobile)
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', moveButton);
+
+
+        // --- Dodatek: Generowanie pływających serduszek w tle ---
+        function createHeartBg() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-bg');
+            heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            heart.style.animationDuration = Math.random() * 10 + 8 + 's'; // Losowa prędkość 8-18s
+            
+            document.getElementById('heartsContainer').appendChild(heart);
+            
+            // Usuń serduszko po zakończeniu animacji, żeby nie zapychać pamięci
+            setTimeout(() => {
+                heart.remove();
+            }, 18000);
+        }
+
+        // Twórz nowe serduszko co 800ms
+        setInterval(createHeartBg, 800);
+
+        // Funkcja na finałowy wybuch serc
+        function createManyHearts() {
+             for(let i=0; i<50; i++) {
+                 setTimeout(createHeartBg, i*50);
+             }
+        }
+
+    </script>
+</body>
+</html>
