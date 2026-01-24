@@ -13,13 +13,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #000000; /* Czarne tło */
+            background-color: #000000;
             font-family: 'Arial', sans-serif;
-            overflow: hidden; /* Zapobiega paskom przewijania */
+            overflow: hidden;
             position: relative;
         }
 
-        /* Subtelna czerwona poświata na środku */
         body::before {
             content: '';
             position: absolute;
@@ -29,15 +28,15 @@
             z-index: -1;
         }
 
-        /* Kontener na główną treść */
         .container {
             text-align: center;
-            color: #ff4d6d; /* Romantyczny różowo-czerwony kolor tekstu */
+            color: #ff4d6d;
             z-index: 10;
             padding: 30px;
             border-radius: 15px;
-            background: rgba(20, 0, 0, 0.5); /* Lekko przezroczyste tło pod tekstem */
+            background: rgba(20, 0, 0, 0.5);
             box-shadow: 0 0 20px rgba(255, 50, 80, 0.2);
+            max-width: 90%;
         }
 
         h1 {
@@ -52,12 +51,11 @@
             color: #ff9eb5;
         }
 
-        /* Stylizacja przycisków */
         .buttons {
             display: flex;
             justify-content: center;
             gap: 20px;
-            position: relative; /* Potrzebne do uciekającego przycisku */
+            flex-wrap: wrap; /* Żeby na telefonie się mieściło */
         }
 
         button {
@@ -70,7 +68,6 @@
             font-weight: bold;
         }
 
-        /* Przycisk TAK */
         #yesBtn {
             background-color: #ff4d6d;
             color: white;
@@ -82,20 +79,26 @@
             background-color: #ff1f48;
         }
 
-        /* Przycisk NIE (który będzie uciekał) */
+        /* Szary przycisk - teraz normalny, nie ucieka */
         #noBtn {
             background-color: #555;
             color: #ccc;
-            position: relative; /* Ważne dla JS */
+        }
+        
+        #noBtn:hover {
+            background-color: #777;
+            color: #fff;
         }
 
-        /* Wiadomość końcowa (początkowo ukryta) */
-        #finalMessage {
+        /* Wiadomości końcowe */
+        .message-box {
             display: none;
             font-size: 2rem;
-            color: #ff4d6d;
             animation: pulse 1.5s infinite;
         }
+
+        #finalMessageYes { color: #ff4d6d; }
+        #finalMessageNo { color: #aaa; font-size: 1.5rem; }
 
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -103,7 +106,6 @@
             100% { transform: scale(1); }
         }
 
-        /* Animowane serduszka w tle */
         .heart-bg {
             position: absolute;
             color: #ff4d6d;
@@ -120,7 +122,6 @@
             20% { opacity: 0.4; }
             100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
-
     </style>
 </head>
 <body>
@@ -138,70 +139,81 @@
             </div>
         </div>
 
-        <div id="finalMessage">
-            Jupi! Wiedziałem! <br> 🥰💖🎆 <br> Do zobaczenia!
+        <div id="finalMessageYes" class="message-box">
+            Jupi! Wiedziałem! <br> 🥰💖🎆 <br> Sprawdź maila (wysłałem Ci powiadomienie)!
+        </div>
+
+        <div id="finalMessageNo" class="message-box">
+            Och... rozumiem. 💔 <br> Mimo wszystko życzę miłego dnia.
         </div>
     </div>
 
-
     <script>
+        // --- KONFIGURACJA ---
+        const FORMSPREE_URL = "https://formspree.io/f/mwvljlln"; 
+        // ---------------------
+
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
         const questionBox = document.getElementById('questionBox');
-        const finalMessage = document.getElementById('finalMessage');
+        const finalMessageYes = document.getElementById('finalMessageYes');
+        const finalMessageNo = document.getElementById('finalMessageNo');
 
-        // Funkcja obsługująca kliknięcie TAK
-        yesBtn.addEventListener('click', () => {
-            questionBox.style.display = 'none';
-            finalMessage.style.display = 'block';
-            // Dodatkowy efekt - wybuch serduszek
-            createManyHearts();
-        });
+        // Funkcja wysyłająca maila
+        function sendNotification(answer) {
+            if (FORMSPREE_URL.includes("TU_WKLEJ")) {
+                console.log("Nie skonfigurowano linku Formspree!");
+                return;
+            }
 
-        // Funkcja sprawiająca, że przycisk NIE ucieka
-        function moveButton() {
-            // Obliczamy nową losową pozycję
-            // Odejmujemy szerokość/wysokość przycisku, żeby nie uciekł poza ekran
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 50);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 50);
-            
-            noBtn.style.position = 'fixed'; // Zmieniamy na fixed, żeby poruszał się po całym oknie
-            noBtn.style.left = `${x}px`;
-            noBtn.style.top = `${y}px`;
+            fetch(FORMSPREE_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    odpowiedz: answer,
+                    data: new Date().toLocaleString()
+                })
+            }).then(response => {
+                console.log("Wysłano powiadomienie:", answer);
+            }).catch(error => {
+                console.error("Błąd wysyłania:", error);
+            });
         }
 
-        // Reaguj na najechanie myszką (desktop) i dotknięcie (mobile)
-        noBtn.addEventListener('mouseover', moveButton);
-        noBtn.addEventListener('touchstart', moveButton);
+        // Obsługa TAK
+        yesBtn.addEventListener('click', () => {
+            questionBox.style.display = 'none';
+            finalMessageYes.style.display = 'block';
+            createManyHearts();
+            sendNotification("Użytkownik kliknął TAK! ❤️");
+        });
 
+        // Obsługa NIE (teraz zwykłe kliknięcie)
+        noBtn.addEventListener('click', () => {
+            questionBox.style.display = 'none';
+            finalMessageNo.style.display = 'block';
+            // Nie robimy wybuchu serc przy odmowie
+            sendNotification("Użytkownik kliknął NIE. 💔");
+        });
 
-        // --- Dodatek: Generowanie pływających serduszek w tle ---
+        // Generowanie tła
         function createHeartBg() {
             const heart = document.createElement('div');
             heart.classList.add('heart-bg');
             heart.innerHTML = '❤';
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.fontSize = Math.random() * 20 + 15 + 'px';
-            heart.style.animationDuration = Math.random() * 10 + 8 + 's'; // Losowa prędkość 8-18s
-            
+            heart.style.animationDuration = Math.random() * 10 + 8 + 's';
             document.getElementById('heartsContainer').appendChild(heart);
-            
-            // Usuń serduszko po zakończeniu animacji, żeby nie zapychać pamięci
-            setTimeout(() => {
-                heart.remove();
-            }, 18000);
+            setTimeout(() => heart.remove(), 18000);
         }
-
-        // Twórz nowe serduszko co 800ms
         setInterval(createHeartBg, 800);
 
-        // Funkcja na finałowy wybuch serc
         function createManyHearts() {
              for(let i=0; i<50; i++) {
                  setTimeout(createHeartBg, i*50);
              }
         }
-
     </script>
 </body>
 </html>
