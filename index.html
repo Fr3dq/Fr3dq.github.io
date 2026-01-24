@@ -12,7 +12,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #000000;
+            background-color: #ffdde1;
             font-family: 'Arial', sans-serif;
             overflow: hidden;
             position: relative;
@@ -23,31 +23,32 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle, rgba(80,0,20,0.4) 0%, rgba(0,0,0,1) 70%);
+            background: radial-gradient(circle, rgba(255,240,245,0.9) 0%, rgba(255,182,193,0.6) 80%);
             z-index: -1;
         }
 
         .container {
             text-align: center;
-            color: #ff4d6d;
+            color: #fff;
             z-index: 10;
-            padding: 30px;
-            border-radius: 15px;
-            background: rgba(20, 0, 0, 0.5);
-            box-shadow: 0 0 20px rgba(255, 50, 80, 0.2);
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(180, 40, 60, 0.7);
+            box-shadow: 0 10px 30px rgba(255, 50, 80, 0.3);
             max-width: 90%;
+            border: 2px solid rgba(255,255,255,0.2);
         }
 
         h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 0 0 10px rgba(255, 77, 109, 0.7);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         p.subtext {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 40px;
-            color: #ff9eb5;
+            color: #ffd1dc;
         }
 
         .buttons {
@@ -63,39 +64,44 @@
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
+            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
             font-weight: bold;
         }
 
         #yesBtn {
             background-color: #ff4d6d;
             color: white;
-            box-shadow: 0 0 15px rgba(255, 77, 109, 0.5);
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
         }
 
         #yesBtn:hover {
-            transform: scale(1.1);
+            transform: scale(1.05) translateY(-3px);
             background-color: #ff1f48;
+            box-shadow: 0 8px 20px rgba(255, 77, 109, 0.6);
         }
 
         #noBtn {
-            background-color: #555;
-            color: #ccc;
+            background-color: #eee;
+            color: #666;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         #noBtn:hover {
-            background-color: #777;
-            color: #fff;
+            background-color: #ddd;
+            color: #333;
+            transform: translateY(-3px);
         }
 
         .message-box {
             display: none;
-            font-size: 2rem;
+            font-size: 1.8rem;
             animation: pulse 1.5s infinite;
+            font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        #finalMessageYes { color: #ff4d6d; }
-        #finalMessageNo { color: #aaa; font-size: 1.5rem; }
+        #finalMessageYes { color: #fff; }
+        #finalMessageNo { color: #eee; font-size: 1.5rem; }
 
         @keyframes pulse {
             0% { transform: scale(1); }
@@ -105,8 +111,8 @@
 
         .heart-bg {
             position: absolute;
-            color: #ff4d6d;
-            opacity: 0.3;
+            color: #ff1f48;
+            opacity: 0.2;
             top: -10vh;
             animation-name: floatHeart;
             animation-timing-function: linear;
@@ -116,7 +122,7 @@
 
         @keyframes floatHeart {
             0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-            20% { opacity: 0.4; }
+            20% { opacity: 0.5; }
             100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
     </style>
@@ -128,6 +134,7 @@
     <div class="container">
         <div id="questionBox">
             <h1>❤️<br>Czy spędzisz ze mną Walentynki?</h1>
+            <p class="subtext">Proszę, powiedz tak...</p>
             
             <div class="buttons">
                 <button id="yesBtn">TAK, z przyjemnością! 🥰</button>
@@ -136,16 +143,18 @@
         </div>
 
         <div id="finalMessageYes" class="message-box">
-            Jupi! <br> 🥰💖🎆 <br> Ciesze sie bardzo
+            Jupi! Wiedziałem! <br> 🥰💖🎆 <br>
+            <br>
+            Sprawdź maila (wysłałem Ci powiadomienie)!
         </div>
 
         <div id="finalMessageNo" class="message-box">
-            Och... 💔 przykro <br>
+            Och... rozumiem. 💔 <br> Mimo wszystko życzę miłego dnia.
         </div>
     </div>
 
     <script>
-        const FORMSPREE_URL = "https://formspree.io/f/mwvljlln"; 
+        const FORMSPREE_URL = "TU_WKLEJ_SWOJ_LINK_OD_FORMSPREE";
 
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
@@ -154,11 +163,8 @@
         const finalMessageNo = document.getElementById('finalMessageNo');
 
         function sendNotification(answer) {
-            if (FORMSPREE_URL.includes("TU_WKLEJ")) {
-                console.log("Nie skonfigurowano linku Formspree!");
-                return;
-            }
-
+            if (FORMSPREE_URL.includes("TU_WKLEJ")) return;
+            
             fetch(FORMSPREE_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -166,10 +172,6 @@
                     odpowiedz: answer,
                     data: new Date().toLocaleString()
                 })
-            }).then(response => {
-                console.log("Wysłano powiadomienie:", answer);
-            }).catch(error => {
-                console.error("Błąd wysyłania:", error);
             });
         }
 
@@ -177,13 +179,13 @@
             questionBox.style.display = 'none';
             finalMessageYes.style.display = 'block';
             createManyHearts();
-            sendNotification("TAK! ❤️");
+            sendNotification("Użytkownik kliknął TAK! ❤️");
         });
 
         noBtn.addEventListener('click', () => {
             questionBox.style.display = 'none';
             finalMessageNo.style.display = 'block';
-            sendNotification("NIE 💔");
+            sendNotification("Użytkownik kliknął NIE. 💔");
         });
 
         function createHeartBg() {
@@ -193,9 +195,14 @@
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.fontSize = Math.random() * 20 + 15 + 'px';
             heart.style.animationDuration = Math.random() * 10 + 8 + 's';
+            
             document.getElementById('heartsContainer').appendChild(heart);
-            setTimeout(() => heart.remove(), 18000);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 18000);
         }
+
         setInterval(createHeartBg, 800);
 
         function createManyHearts() {
