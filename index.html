@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pytanie Walentynkowe</title>
     <style>
-        /* Ustawienia ogólne strony */
         body {
             margin: 0;
             padding: 0;
@@ -55,7 +54,7 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            flex-wrap: wrap; /* Żeby na telefonie się mieściło */
+            flex-wrap: wrap;
         }
 
         button {
@@ -79,7 +78,6 @@
             background-color: #ff1f48;
         }
 
-        /* Szary przycisk - teraz normalny, nie ucieka */
         #noBtn {
             background-color: #555;
             color: #ccc;
@@ -90,7 +88,6 @@
             color: #fff;
         }
 
-        /* Wiadomości końcowe */
         .message-box {
             display: none;
             font-size: 2rem;
@@ -131,7 +128,6 @@
     <div class="container">
         <div id="questionBox">
             <h1>❤️<br>Czy spędzisz ze mną Walentynki?</h1>
-            <p class="subtext">Proszę, powiedz tak...</p>
             
             <div class="buttons">
                 <button id="yesBtn">TAK, z przyjemnością! 🥰</button>
@@ -140,18 +136,16 @@
         </div>
 
         <div id="finalMessageYes" class="message-box">
-            Jupi! Wiedziałem! <br> 🥰💖🎆 <br> Sprawdź maila (wysłałem Ci powiadomienie)!
+            Jupi! <br> 🥰💖🎆 <br> Ciesze sie bardzo
         </div>
 
         <div id="finalMessageNo" class="message-box">
-            Och... rozumiem. 💔 <br> Mimo wszystko życzę miłego dnia.
+            Och... 💔 przykro <br>
         </div>
     </div>
 
     <script>
-        // --- KONFIGURACJA ---
         const FORMSPREE_URL = "https://formspree.io/f/mwvljlln"; 
-        // ---------------------
 
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
@@ -159,7 +153,6 @@
         const finalMessageYes = document.getElementById('finalMessageYes');
         const finalMessageNo = document.getElementById('finalMessageNo');
 
-        // Funkcja wysyłająca maila
         function sendNotification(answer) {
             if (FORMSPREE_URL.includes("TU_WKLEJ")) {
                 console.log("Nie skonfigurowano linku Formspree!");
@@ -180,23 +173,19 @@
             });
         }
 
-        // Obsługa TAK
         yesBtn.addEventListener('click', () => {
             questionBox.style.display = 'none';
             finalMessageYes.style.display = 'block';
             createManyHearts();
-            sendNotification("Użytkownik kliknął TAK! ❤️");
+            sendNotification("TAK! ❤️");
         });
 
-        // Obsługa NIE (teraz zwykłe kliknięcie)
         noBtn.addEventListener('click', () => {
             questionBox.style.display = 'none';
             finalMessageNo.style.display = 'block';
-            // Nie robimy wybuchu serc przy odmowie
-            sendNotification("Użytkownik kliknął NIE. 💔");
+            sendNotification("NIE 💔");
         });
 
-        // Generowanie tła
         function createHeartBg() {
             const heart = document.createElement('div');
             heart.classList.add('heart-bg');
