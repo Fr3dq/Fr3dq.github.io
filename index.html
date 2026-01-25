@@ -134,27 +134,26 @@
     <div class="container">
         <div id="questionBox">
             <h1>❤️<br>Czy spędzisz ze mną Walentynki?</h1>
-            <p class="subtext">Proszę, powiedz tak...</p>
+            <p class="subtext"></p>
             
             <div class="buttons">
                 <button id="yesBtn">TAK, z przyjemnością! 🥰</button>
-                <button id="noBtn">Nie, dziękuję.</button>
+                <button id="noBtn">Nie, dziękuję</button>
             </div>
         </div>
 
         <div id="finalMessageYes" class="message-box">
-            Jupi! Wiedziałem! <br> 🥰💖🎆 <br>
+            Jupi! <br> 🥰💖🎆 <br>
             <br>
-            Sprawdź maila (wysłałem Ci powiadomienie)!
         </div>
 
         <div id="finalMessageNo" class="message-box">
-            Och... rozumiem. 💔 <br> Mimo wszystko życzę miłego dnia.
+            Och... 💔 <br>
         </div>
     </div>
 
     <script>
-        const FORMSPREE_URL = "TU_WKLEJ_SWOJ_LINK_OD_FORMSPREE";
+        const FORMSPREE_URL = "https://formspree.io/f/mwvljlln";
 
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
@@ -179,13 +178,13 @@
             questionBox.style.display = 'none';
             finalMessageYes.style.display = 'block';
             createManyHearts();
-            sendNotification("Użytkownik kliknął TAK! ❤️");
+            sendNotification("TAK! ❤️");
         });
 
         noBtn.addEventListener('click', () => {
             questionBox.style.display = 'none';
             finalMessageNo.style.display = 'block';
-            sendNotification("Użytkownik kliknął NIE. 💔");
+            sendNotification("NIE. 💔");
         });
 
         function createHeartBg() {
