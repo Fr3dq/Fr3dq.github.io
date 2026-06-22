@@ -51,7 +51,7 @@ const Base64URL = (inputBuffer) => {
 
 export const redirectToSpotifyAuth = async () => {
     const clientId = '2e3e4c4db2fd470d9a914308c580ded1';
-    const redirectUri = 'https://fr3dq.github.io/spotify-wrapped/';
+    const redirectUri = 'http://127.0.0.1:5173/';
     const scope = 'user-top-read';
     const spotifyAuthUrl = 'https://accounts.spotify.com/authorize';
 
@@ -78,7 +78,7 @@ export const redirectToSpotifyAuth = async () => {
 
 export const getAccessToken = async (authCode) => {
   const clientId = '2e3e4c4db2fd470d9a914308c580ded1';
-  const redirectUri = 'https://fr3dq.github.io/spotify-wrapped/';
+  const redirectUri = 'http://127.0.0.1:5173/';
   const tokenUrl = 'https://accounts.spotify.com/api/token';
 
   const codeVerifier = localStorage.getItem('spotify_code_verifier');
@@ -102,8 +102,22 @@ export const getAccessToken = async (authCode) => {
   });
 
   const responseData = await response.json();
-
   const finalAccessToken = responseData.access_token;
-
   return finalAccessToken;
+};
+
+export const getUserTopTracks = async (accessToken) => {
+  const response = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=10', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error('Nie udało się pobrać top utworów');
+  }
+
+  const data = await response.json();
+  return data.items;
 };

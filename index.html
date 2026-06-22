@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria Zdjęć</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #ffffff;
+            font-weight: 500;
+        }
+        .gallery-container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .image-wrapper {
+            width: 100%;
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        .image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            loading: lazy; /* Optymalizacja ładowania na telefonie */
+        }
+        .image-footer {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            color: #888888;
+            text-align: center;
+            background-color: #1a1a1a;
+            border-top: 1px solid #2c2c2c;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Galeria mobilna</h1>
+
+    <div class="gallery-container">
+        <!-- 1 -->
+        <div class="image-wrapper">
+            <img src="1411644.JPG" alt="Zdjęcie 1411644">
+            <div class="image-footer">1411644.JPG</div>
+        </div>
+        
+        <!-- 2 -->
+        <div class="image-wrapper">
+            <img src="1412014.JPG" alt="Zdjęcie 1412014">
+            <div class="image-footer">1412014.JPG</div>
+        </div>
+        
+        <!-- 3 -->
+        <div class="image-wrapper">
+            <img src="IMG_1062.JPG" alt="Zdjęcie IMG_1062">
+            <div class="image-footer">IMG_1062.JPG</div>
+        </div>
+        
+        <!-- 4 -->
+        <div class="image-wrapper">
+            <img src="1411934.JPG" alt="Zdjęcie 1411934">
+            <div class="image-footer">1411934.JPG</div>
+        </div>
+        
+        <!-- 5 -->
+        <div class="image-wrapper">
+            <img src="IMG_3840.jpeg" alt="Zdjęcie IMG_3840">
+            <div class="image-footer">IMG_3840.jpeg</div>
+        </div>
+        
+        <!-- 6 -->
+        <div class="image-wrapper">
+            <img src="1412049.JPG" alt="Zdjęcie 1412049">
+            <div class="image-footer">1412049.JPG</div>
+        </div>
+        
+        <!-- 7 -->
+        <div class="image-wrapper">
+            <img src="IMG_1061.JPG" alt="Zdjęcie IMG_1061">
+            <div class="image-footer">IMG_1061.JPG</div>
+        </div>
+        
+        <!-- 8 -->
+        <div class="image-wrapper">
+            <img src="IMG_4989.jpeg" alt="Zdjęcie IMG_4989">
+            <div class="image-footer">IMG_4989.jpeg</div>
+        </div>
+    </div>
+
+</body>
+</html>
