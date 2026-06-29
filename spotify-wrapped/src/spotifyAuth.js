@@ -51,7 +51,7 @@ const Base64URL = (inputBuffer) => {
 
 export const redirectToSpotifyAuth = async () => {
     const clientId = '2e3e4c4db2fd470d9a914308c580ded1';
-    const redirectUri = 'http://127.0.0.1:5173/';
+    const redirectUri = 'https://fr3dq.github.io/';
     const scope = 'user-top-read';
     const spotifyAuthUrl = 'https://accounts.spotify.com/authorize';
 
@@ -78,7 +78,7 @@ export const redirectToSpotifyAuth = async () => {
 
 export const getAccessToken = async (authCode) => {
   const clientId = '2e3e4c4db2fd470d9a914308c580ded1';
-  const redirectUri = 'http://127.0.0.1:5173/';
+  const redirectUri = 'https://fr3dq.github.io/';
   const tokenUrl = 'https://accounts.spotify.com/api/token';
 
   const codeVerifier = localStorage.getItem('spotify_code_verifier');
