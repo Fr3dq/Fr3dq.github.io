@@ -106,11 +106,11 @@ function App() {
       {/* ----------------- EKRAN LOGOWANIA ----------------- */}
       {!token ? (
         <div style={{ textAlign: 'center', marginTop: '100px' }}>
-          <h1 style={{ color: '#1DB954', fontSize: '3rem', marginBottom: '10px' }}>
+          <h1 style={{ color: '#1DB954', fontSize: '3rem', marginBottom: '20px', paddingBottom: '5px'}}>
             Spotify Wrapped
           </h1>
-          <p style={{ color: '#b3b3b3', fontSize: '1.2rem' }}>
-            Odkryj swoje muzyczne podsumowanie
+          <p style={{ color: '#b3b3b3', fontSize: '1.2rem'}}>
+            Sprawdz swoje staty
           </p>
           <button
             onClick={redirectToSpotifyAuth}
